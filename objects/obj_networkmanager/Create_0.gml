@@ -26,7 +26,7 @@ create_server = function(_port, _maxClients)
 	return false;
 }
 
-destroy_server = function()
+close_server = function()
 {
 	if (type == 1)
 	{

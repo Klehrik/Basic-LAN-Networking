@@ -48,8 +48,8 @@ create_server(port, maxClients)
 * Create a new server with the given port limited to a set number of clients.
 * (The server itself does not count as a client, so for a four player game, set maxClients to 3.)
 
-destroy_server()
-* [Host only] Destroy the server if it is up.
+close_server()
+* [Host only] Close the server if it is up.
 
 join_server(ip, port)
 * Join an existing server with the given IP address and port.
