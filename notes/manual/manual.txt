@@ -83,14 +83,14 @@ instance_create_network(x, y, obj)
 instance_sync_variables(id, {variables...})
 * Sync an instance's given variables with the server/all other clients.
 * All arguments provided after "id" will be treated as variables to be synced.
-* NOTE: Variable names must be provided as strings (etc. "image_blend").
+* NOTE: Variable names must be provided as strings (etc. "image_blend" instead of image_blend).
 
 instance_host_to_local(id)
 * [Client only] Matches an instance's ID on the server to the same instance on this client.
 * Returns "-1" if the instance cannot be found.
-* (This function is automatically used in instance_sync_variables() and has little use anywhere else.)
+* (This function is used in instance_sync_variables() and has little use anywhere else.)
 
 instance_local_to_host(id)
 * [Client only] Matches an instance's ID on this client to the same instance on the server.
 * Returns "-1" if the instance cannot be found.
-* (This function is automatically used in instance_sync_variables() and has little use anywhere else.)
+* (This function is used in instance_sync_variables() and has little use anywhere else.)
