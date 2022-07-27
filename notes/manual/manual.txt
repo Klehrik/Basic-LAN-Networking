@@ -1,0 +1,93 @@
+[[ Basic TCP Server Hosting ]]
+-- Klehrik
+
+--------------------
+
+[[ GETTING STARTED ]]
+
+The only object required is "obj_NetworkManager".
+
+To create a server or client, first create an instance
+of "obj_NetworkManager" and assign it as follows:
+
+1 |  // Init
+2 |
+3 |  net = instance_create_depth(0, 0, 0, obj_NetworkManager);
+
+You will be able to access the networking functions through this as follows:
+
+1 |  var ping = net.get_ping();
+
+--------------------
+
+[[ VARIABLES ]]
+
+The following variables (located at the top of "obj_NetworkManager"'s Create Event) can be modified:
+
+timeout (default = 5)
+* The time (in seconds) that a client will spend attempting to connect to a server.
+* The client will also automatically disconnect if a ping is not sent back within this time.
+
+pingFrequency (default = 2)
+* The time (in seconds) between a client's automatically sent pings.
+
+bufferDefaultSize (default = 32)
+* The default size (in bytes) for data packets sent over the network.
+
+bufferInt (default = buffer_s32)
+* The size used for integers in data packets.
+
+bufferFloat (default = buffer_f32)
+* The size used for floats in data packets.
+
+--------------------
+
+[[ FUNCTIONS ]]
+
+create_server(port, maxClients)
+* Create a new server with the given port limited to a set number of clients.
+* (The server itself does not count as a client, so for a four player game, set maxClients to 3.)
+
+destroy_server()
+* [Host only] Destroy the server if it is up.
+
+join_server(ip, port)
+* Join an existing server with the given IP address and port.
+* Returns "false" if the connection failed.
+
+leave_server()
+* [Client only] Leave the current server.
+
+is_connected()
+* Check if this instance is connected.
+
+is_host()
+* Check if this instance is the host.
+
+is_client()
+* Check if this instance is a client.
+
+get_client_count()
+* [Host only] Get the number of connected clients.
+
+send_ping()
+* [Client only] Send a ping to the server.
+* (This function is automatically called by all clients in set intervals.)
+
+get_ping()
+* [Client only] Get the ping (in ms) of this client.
+
+instance_create_network(x, y, obj)
+* Create an instance that is also created on the server/all other clients.
+
+instance_sync_variables(id, {variables...})
+* Sync an instance's given variables with the server/all other clients.
+* All arguments provided after "id" will be treated as variables to be synced.
+
+instance_host_to_local(id)
+* [Client only] Matches an instance's ID on the server to the same instance on this client.
+* Returns "-1" if the instance cannot be found.
+
+instance_local_to_host(id)
+* [Client only] Matches an instance's ID on this client to the same instance on the server.
+* Returns "-1" if the instance cannot be found.
