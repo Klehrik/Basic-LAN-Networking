@@ -198,7 +198,7 @@ instance_sync_variables = function(_id)
 	return false;
 }
 
-instance_host_to_local = function(_id)
+instance_host_to_local = function(_id)	// Used by instance_sync_variables()
 {
 	if (type == 2)
 	{
@@ -216,7 +216,7 @@ instance_host_to_local = function(_id)
 	return -1;
 }
 
-instance_local_to_host = function(_id)
+instance_local_to_host = function(_id)	// Used by instance_sync_variables()
 {
 	if (type == 2)
 	{
