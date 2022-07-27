@@ -136,7 +136,8 @@ instance_create_network = function(_x, _y, _obj)
 		}
 		else if (type == 2) network_send_packet(client, buffer, buffer_get_size(buffer));
 		buffer_delete(buffer);
-		return true;
+		
+		return inst;
 	}
 	return false;
 }

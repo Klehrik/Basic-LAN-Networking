@@ -79,6 +79,7 @@ get_ping()
 
 instance_create_network(x, y, obj)
 * Create an instance that is also created on the server/all other clients.
+* Returns the created instance's ID.
 
 instance_sync_variables(id, {variables...})
 * Sync an instance's given variables with the server/all other clients.
