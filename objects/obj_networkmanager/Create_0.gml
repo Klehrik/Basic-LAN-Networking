@@ -146,13 +146,19 @@ instance_sync_variables = function(_id)
 {
 	if (type > 0)
 	{
+		var args = [];
+		
+		// Permit a single array containing all the variable names to be used instead
+		if (argument_count == 2 and typeof(argument[1]) == "array") args = argument[1];
+		else { for (var i = 1; i < argument_count; i++) args[i - 1] = argument[i]; }
+		
 		// Store all variable types in a string
 		// Additionally, create a new array without invalid variables
 		var type_string = "";
 		var _vars = [];
-		for (var i = 1; i < argument_count; i++)
+		for (var i = 0; i < array_length(args); i++)
 		{
-			var var_name = argument[i];
+			var var_name = args[i];
 			if (variable_instance_exists(_id, var_name))
 			{
 				var val = variable_instance_get(_id, var_name);
