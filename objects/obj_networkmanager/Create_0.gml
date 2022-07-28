@@ -157,7 +157,8 @@ instance_sync_variables = function(_id)
 			{
 				var val = variable_instance_get(_id, var_name);
 				
-				if (typeof(val) == "string") type_string += "s";
+				if (typeof(val) == "bool") type_string += "b";
+				else if (typeof(val) == "string") type_string += "s";
 				else if (abs(frac(val)) > 0) type_string += "f";
 				else if (typeof(val) == "number" or typeof(val) == "int32" or typeof(val) == "int64") type_string += "i";
 				
@@ -183,7 +184,8 @@ instance_sync_variables = function(_id)
 			var val = _vars[i][1];
 			var val_type = string_copy(type_string, i + 1, 1);
 			
-			if (val_type == "s") buffer_write(buffer, buffer_string, val);		// String
+			if (val_type == "b") buffer_write(buffer, buffer_bool, val);		// Boolean
+			else if (val_type == "s") buffer_write(buffer, buffer_string, val);	// String
 			else if (val_type == "i") buffer_write(buffer, bufferInt, val);		// Integer
 			else if (val_type == "f") buffer_write(buffer, bufferFloat, val);	// Float
 		}
@@ -242,7 +244,8 @@ set_flag = function(flag, value)
 		variable_instance_set(id, flag, value);
 		
 		var _type = "";
-		if (typeof(value) == "string") _type = "s";
+		if (typeof(value) == "bool") _type = "b";
+		else if (typeof(value) == "string") _type = "s";
 		else if (abs(frac(value)) > 0) _type = "f";
 		else if (typeof(value) == "number" or typeof(value) == "int32" or typeof(value) == "int64") _type = "i";
 		
@@ -254,7 +257,8 @@ set_flag = function(flag, value)
 		buffer_write(buffer, buffer_string, flag);
 		
 		// Write the value to the buffer
-		if (_type == "s") buffer_write(buffer, buffer_string, value);		// String
+		if (_type == "b") buffer_write(buffer, buffer_bool, value);		// Boolean
+		else if (_type == "s") buffer_write(buffer, buffer_string, value);		// String
 		else if (_type == "i") buffer_write(buffer, bufferInt, value);		// Integer
 		else if (_type == "f") buffer_write(buffer, bufferFloat, value);	// Float
 	

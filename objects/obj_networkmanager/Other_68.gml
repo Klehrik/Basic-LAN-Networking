@@ -96,7 +96,8 @@ switch (_type)
 						var val_type = string_copy(_types, i + 1, 1);
 							
 						var val = 0;
-						if (val_type == "s") val = buffer_read(buffer, buffer_string);		// String
+						if (val_type == "b") val = buffer_read(buffer, buffer_bool);		// Boolean
+						else if (val_type == "s") val = buffer_read(buffer, buffer_string);	// String
 						else if (val_type == "i") val = buffer_read(buffer, bufferInt);		// Integer
 						else if (val_type == "f") val = buffer_read(buffer, bufferFloat);	// Float
 							
@@ -134,7 +135,8 @@ switch (_type)
 				var flag = buffer_read(buffer, buffer_string);
 				
 				var value = -1;
-				if (_type == "s") value = buffer_read(buffer, buffer_string);		// String
+				if (_type == "b") value = buffer_read(buffer, buffer_bool);			// Boolean
+				else if (_type == "s") value = buffer_read(buffer, buffer_string);	// String
 				else if (_type == "i") value = buffer_read(buffer, bufferInt);		// Integer
 				else if (_type == "f") value = buffer_read(buffer, bufferFloat);	// Float
 							
