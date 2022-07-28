@@ -158,7 +158,7 @@ instance_sync_variables = function(_id)
 				var val = variable_instance_get(_id, var_name);
 				
 				if (typeof(val) == "string") type_string += "s";
-				else if (frac(val) > 0) type_string += "f";
+				else if (abs(frac(val)) > 0) type_string += "f";
 				else if (typeof(val) == "number" or typeof(val) == "int32" or typeof(val) == "int64") type_string += "i";
 				
 				_vars[array_length(_vars)] = [var_name, val];
@@ -243,7 +243,7 @@ set_flag = function(flag, value)
 		
 		var _type = "";
 		if (typeof(value) == "string") _type = "s";
-		else if (frac(value) > 0) _type = "f";
+		else if (abs(frac(value)) > 0) _type = "f";
 		else if (typeof(value) == "number" or typeof(value) == "int32" or typeof(value) == "int64") _type = "i";
 		
 		// Create buffer and write type and flag name to it
