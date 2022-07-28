@@ -1,4 +1,4 @@
-[[ Basic TCP Server Hosting ]]
+[[ Basic LAN Networking ]]
 -- Klehrik
 
 --------------------
