@@ -85,3 +85,15 @@ instance_sync_variables(id, {variables...})
 * Sync an instance's given variables with the server/all other clients.
 * All arguments provided after "id" will be treated as variables to be synced.
 * NOTE: Variable names must be provided as strings (etc. "image_blend" instead of image_blend).
+
+set_flag(flag, value)
+* Set a variable (referred to as a "flag") to a specified value on the server/all clients.
+* The flag name must be provided as a string (etc. "doSomething" instead of doSomething).
+
+set_flag_local(flag, value)
+* Set a flag on this instance to a specified value.
+* The flag name must be provided as a string (etc. "doSomething" instead of doSomething).
+
+read_flag(flag)
+* Read the value of a flag.
+* The flag name must be provided as a string (etc. "doSomething" instead of doSomething).

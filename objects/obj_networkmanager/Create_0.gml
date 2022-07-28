@@ -159,7 +159,7 @@ instance_sync_variables = function(_id)
 				
 				if (typeof(val) == "string") type_string += "s";
 				else if (frac(val) > 0) type_string += "f";
-				else if (typeof(val) == "number" or typeof(val) == "int32") type_string += "i";
+				else if (typeof(val) == "number" or typeof(val) == "int32" or typeof(val) == "int64") type_string += "i";
 				
 				_vars[array_length(_vars)] = [var_name, val];
 			}
@@ -231,6 +231,60 @@ instance_local_to_host = function(_id)	// Used by instance_sync_variables()
 			}
 		}
 		return __id;
+	}
+	return -1;
+}
+
+set_flag = function(flag, value)
+{
+	if (type > 0)
+	{
+		variable_instance_set(id, flag, value);
+		
+		var _type = "";
+		if (typeof(value) == "string") _type = "s";
+		else if (frac(value) > 0) _type = "f";
+		else if (typeof(value) == "number" or typeof(value) == "int32" or typeof(value) == "int64") _type = "i";
+		
+		// Create buffer and write type and flag name to it
+		var buffer = buffer_create(bufferDefaultSize, buffer_grow, 1);
+		buffer_seek(buffer, buffer_seek_start, 0);
+		buffer_write(buffer, buffer_u8, 40);	// packet ID
+		buffer_write(buffer, buffer_string, _type);
+		buffer_write(buffer, buffer_string, flag);
+		
+		// Write the value to the buffer
+		if (_type == "s") buffer_write(buffer, buffer_string, value);		// String
+		else if (_type == "i") buffer_write(buffer, bufferInt, value);		// Integer
+		else if (_type == "f") buffer_write(buffer, bufferFloat, value);	// Float
+	
+		if (type == 1)
+		{
+			for (var i = 0; i < ds_list_size(clientList); i++) network_send_packet(clientList[| i], buffer, buffer_get_size(buffer));
+		}
+		else if (type == 2) network_send_packet(client, buffer, buffer_get_size(buffer));
+		buffer_delete(buffer);
+		return true;
+	}
+	return false;
+}
+
+set_flag_local = function(flag, value)
+{
+	if (type > 0)
+	{
+		variable_instance_set(id, flag, value);
+		return true;
+	}
+	return false;
+}
+
+read_flag = function(flag)
+{
+	if (type > 0)
+	{
+		if (variable_instance_exists(id, flag)) return variable_instance_get(id, flag);
+		return -1;
 	}
 	return -1;
 }

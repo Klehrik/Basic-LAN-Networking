@@ -74,7 +74,6 @@ switch (_type)
 				
 			
 			case 20:		// instance_sync_variables - receiving
-				
 				var _id = buffer_read(buffer, buffer_s32);
 				var _types = buffer_read(buffer, buffer_string);
 				
@@ -118,6 +117,28 @@ switch (_type)
 					ping = round(abs(pingTimer) / room_speed * 1000);
 					pingTimer = pingFrequency * room_speed;
 				}
+				break;
+				
+			
+			case 40:		// set_flag - receiving
+				if (type == 1)
+				{
+					var socket = async_load[? "id"];
+					for (var i = 0; i < ds_list_size(clientList); i++)
+					{
+						if (clientList[| i] != socket) network_send_packet(clientList[| i], buffer, buffer_get_size(buffer));
+					}
+				}
+				
+				var _type = buffer_read(buffer, buffer_string);
+				var flag = buffer_read(buffer, buffer_string);
+				
+				var value = -1;
+				if (_type == "s") value = buffer_read(buffer, buffer_string);		// String
+				else if (_type == "i") value = buffer_read(buffer, bufferInt);		// Integer
+				else if (_type == "f") value = buffer_read(buffer, bufferFloat);	// Float
+							
+				variable_instance_set(id, flag, value);
 				break;
 		}
 		break;
