@@ -1,18 +1,16 @@
-[[ Basic TCP Server Hosting ]]
+[[ Basic LAN Networking (with TCP) ]]
 -- Klehrik
 
 --------------------
 
 [[ GETTING STARTED ]]
 
-The only object required is "obj_NetworkManager".
-
-To create a server or client, first create an instance
-of "obj_NetworkManager" and assign it as follows:
+To create a server or client, run
+"create_network_manager()" and assign it to a variable:
 
 1 |  // Init
 2 |
-3 |  net = instance_create_depth(0, 0, 0, obj_NetworkManager);
+3 |  net = create_network_manager();
 
 You will be able to access the networking functions through this as follows:
 
@@ -76,6 +74,7 @@ send_ping()
 
 get_ping()
 * [Client only] Get the ping (in ms) of this client.
+* The default value of this is -1 (before the first ping is sent).
 
 instance_create_network(x, y, obj)
 * Create an instance that is also created on the server/all other clients.

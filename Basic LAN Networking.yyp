@@ -3,7 +3,8 @@
   "resourceVersion": "1.6",
   "name": "Basic LAN Networking",
   "resources": [
-    {"id":{"name":"MANUAL","path":"notes/MANUAL/MANUAL.yy",},"order":1,},
+    {"id":{"name":"MANUAL","path":"notes/MANUAL/MANUAL.yy",},"order":0,},
+    {"id":{"name":"scr_NetworkManager","path":"scripts/scr_NetworkManager/scr_NetworkManager.yy",},"order":1,},
     {"id":{"name":"obj_NetworkManager","path":"objects/obj_NetworkManager/obj_NetworkManager.yy",},"order":2,},
   ],
   "Options": [
@@ -36,6 +37,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Animation Curves","folderPath":"folders/Animation Curves.yy","order":12,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Notes","folderPath":"folders/Notes.yy","order":13,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Extensions","folderPath":"folders/Extensions.yy","order":14,},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Basic LAN Networking","folderPath":"folders/Extensions/Basic LAN Networking.yy","order":1,},
   ],
   "AudioGroups": [
     {"resourceType":"GMAudioGroup","resourceVersion":"1.3","name":"audiogroup_default","targets":-1,},

@@ -5,7 +5,21 @@ var _type = async_load[? "type"];
 switch (_type)
 {
 	case network_type_connect:
-		if (type == 1) ds_list_add(clientList, async_load[? "socket"]);
+		if (type == 1)
+		{
+			ds_list_add(clientList, async_load[? "socket"]);
+			
+			// Sync instances marked as "recoverable"
+			for (var i = 0; i < ds_list_size(recoverableInstances); i++)
+			{
+				var inst = recoverableInstances[| i];
+				if (instance_exists(inst))
+				{
+					instance_create_network_recoverable(inst, ds_list_size(clientList));
+					instance_sync_variables(inst, variable_instance_get_names(inst));
+				}
+			}
+		}
 		break;
 		
 	
@@ -142,6 +156,25 @@ switch (_type)
 							
 				variable_instance_set(id, flag, value);
 				break;
+				
+				
+			//case 50:		// instance_set_recoverable - host receiving mark request
+			//	if (type == 1)
+			//	{
+			//		var _id = buffer_read(buffer, buffer_s32);
+			//		var mark = buffer_read(buffer, buffer_bool);
+				
+			//		var pos = ds_list_find_value(recoverableInstances, _id);
+			//		if (mark)
+			//		{
+			//			if (is_undefined(pos)) ds_list_add(recoverableInstances, _id);
+			//		}
+			//		else
+			//		{
+			//			if (!is_undefined(pos)) ds_list_delete(recoverableInstances, pos);
+			//		}
+			//	}
+			//	break;
 		}
 		break;
 }

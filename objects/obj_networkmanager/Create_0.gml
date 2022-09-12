@@ -1,6 +1,6 @@
 /// obj_NetworkManager : Init
 
-// Modifiable values
+// Networking variables
 timeout = 5;				// in seconds
 pingFrequency = 2;			// in seconds
 bufferDefaultSize = 32;		// in bytes
@@ -21,6 +21,7 @@ create_server = function(_port, _maxClients)
 		maxClients = _maxClients;
 		server = network_create_server(network_socket_tcp, port, maxClients);
 		clientList = ds_list_create();
+		recoverableInstances = ds_list_create();
 		return true;
 	}
 	return false;
@@ -54,7 +55,7 @@ join_server = function(_ip, _port)
 		}
 		idList = ds_list_create();
 		idListCleanTimer = room_speed;
-		ping = "...";
+		ping = -1;
 		pingTimer = pingFrequency * room_speed;
 		return true;
 	}
@@ -142,6 +143,26 @@ instance_create_network = function(_x, _y, _obj)
 	return false;
 }
 
+//instance_create_network_recoverable = function(_id, clientSocket)
+//{
+//	if (type == 1)
+//	{	
+//		var buffer = buffer_create(20, buffer_grow, 1);
+//		buffer_seek(buffer, buffer_seek_start, 0);
+//		buffer_write(buffer, buffer_u8, 10);					// packet ID
+//		buffer_write(buffer, buffer_s32, _id.x);				// x
+//		buffer_write(buffer, buffer_s32, _id.y);				// y
+//		buffer_write(buffer, buffer_s32, _id.object_index);		// object
+//		buffer_write(buffer, buffer_s32, _id);					// instance
+		
+//		network_send_packet(clientSocket, buffer, buffer_get_size(buffer));
+//		buffer_delete(buffer);
+		
+//		return true;
+//	}
+//	return false;
+//}
+
 instance_sync_variables = function(_id)
 {
 	if (type > 0)
@@ -167,6 +188,7 @@ instance_sync_variables = function(_id)
 				else if (typeof(val) == "string") type_string += "s";
 				else if (abs(frac(val)) > 0) type_string += "f";
 				else if (typeof(val) == "number" or typeof(val) == "int32" or typeof(val) == "int64") type_string += "i";
+				else type_string += "?";
 				
 				_vars[array_length(_vars)] = [var_name, val];
 			}
@@ -206,6 +228,40 @@ instance_sync_variables = function(_id)
 	}
 	return false;
 }
+
+//instance_set_recoverable = function(_id)
+//{
+//	var mark = true;
+//	if (argument_count >= 2 and argument[1] == false) mark = false;
+	
+//	if (type == 1)
+//	{
+//		var pos = ds_list_find_value(recoverableInstances, _id);
+//		if (mark)
+//		{
+//			if (is_undefined(pos)) ds_list_add(recoverableInstances, _id);
+//		}
+//		else
+//		{
+//			if (!is_undefined(pos)) ds_list_delete(recoverableInstances, pos);
+//		}
+//		return true;
+//	}
+//	else if (type == 2)
+//	{
+//		_id = instance_local_to_host(_id);
+			
+//		// Send mark request to host
+//		var buffer = buffer_create(10, buffer_grow, 1);
+//		buffer_seek(buffer, buffer_seek_start, 0);
+//		buffer_write(buffer, buffer_u8, 50);	// packet ID
+//		buffer_write(buffer, buffer_s32, _id);
+//		buffer_write(buffer, buffer_bool, mark);
+		
+//		return true;
+//	}
+//	return false;
+//}
 
 instance_host_to_local = function(_id)	// Used by instance_sync_variables()
 {
@@ -263,8 +319,8 @@ set_flag = function(flag, value)
 		buffer_write(buffer, buffer_string, flag);
 		
 		// Write the value to the buffer
-		if (_type == "b") buffer_write(buffer, buffer_bool, value);		// Boolean
-		else if (_type == "s") buffer_write(buffer, buffer_string, value);		// String
+		if (_type == "b") buffer_write(buffer, buffer_bool, value);			// Boolean
+		else if (_type == "s") buffer_write(buffer, buffer_string, value);	// String
 		else if (_type == "i") buffer_write(buffer, bufferInt, value);		// Integer
 		else if (_type == "f") buffer_write(buffer, bufferFloat, value);	// Float
 	
